@@ -2,5 +2,30 @@
   "name": "@tickcap/web",
   "version": "0.0.0",
   "private": true,
-  "description": "Web H5 应用（Next.js，移动优先 PWA）。结构规格见 docs/07 §5"
+  "description": "Web H5 应用（Next.js，移动优先 PWA）。结构规格见 docs/07 §5",
+  "scripts": {
+    "dev": "next dev -p 3100",
+    "build": "next build",
+    "start": "next start -p 3100",
+    "typecheck": "tsc --noEmit",
+    "e2e": "node e2e/smoke.mjs"
+  },
+  "dependencies": {
+    "@tickcap/core": "workspace:*",
+    "@tickcap/tokens": "workspace:*",
+    "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "postcss": "^8.4.49",
+    "puppeteer-core": "^24.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0"
+  }
 }

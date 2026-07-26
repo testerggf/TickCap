@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+
+/* 主题变量由 layout.tsx 从 @tickcap/tokens 注入（AGENTS：视觉值只来自 tokens） */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, 'PingFang SC', 'HarmonyOS Sans', 'MiSans', sans-serif;
+  background-color: var(--tc-bg);
+  color: var(--tc-text-1);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+/* ===== 语义色工具类 ===== */
+.t1 { color: var(--tc-text-1); }
+.t2 { color: var(--tc-text-2); }
+.t3 { color: var(--tc-text-3); }
+.bg-app { background-color: var(--tc-bg); }
+.bg-surface { background-color: var(--tc-surface); }
+.bg-surface2 { background: var(--tc-surface-2); }
+.border-app { border-color: var(--tc-border); }
+.text-primary { color: var(--tc-primary); }
+.bg-primary-soft { background: var(--tc-primary-soft); }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ===== 材质系统（06 §3.4）===== */
+.aurora {
+  background-color: var(--tc-bg);
+  background-image: var(--tc-aurora);
+  background-attachment: fixed;
+}
+.glass {
+  background: var(--tc-glass-bg);
+  border: 1px solid var(--tc-glass-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+@supports (backdrop-filter: blur(1px)) {
+  .glass.glass-on {
+    backdrop-filter: blur(var(--tc-glass-blur)) saturate(var(--tc-glass-saturate));
+    -webkit-backdrop-filter: blur(var(--tc-glass-blur)) saturate(var(--tc-glass-saturate));
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass.glass-on {
+    background: var(--tc-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+.grad-action {
+  background: var(--tc-gradient-action);
+  color: #fff;
+}
+
+/* ===== 果冻按压（06 §3.7）===== */
+.press {
+  transition: transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.press:active {
+  transform: scale(0.96);
+}
+
+/* ===== 动效 ===== */
+@keyframes tc-breathe {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+.breathe { animation: tc-breathe 3s ease-in-out infinite; }
+
+@keyframes tc-pop-in {
+  0% { opacity: 0; transform: translateY(14px) scale(0.92); }
+  60% { transform: translateY(-3px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.pop-in { animation: tc-pop-in 450ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+@keyframes tc-fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: tc-fade-up 250ms ease-out; }
+
+@keyframes tc-sink {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(60px) scale(0.6); opacity: 0; }
+}
+.sink { animation: tc-sink 450ms ease-in forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pop-in, .fade-up, .sink { animation: none; }
+  .breathe { animation: none; opacity: 1; }
+  .press, .press:active { transition: none; transform: none; }
+}
+
+/* 滚动条弱化 */
+::-webkit-scrollbar { width: 0; height: 0; }

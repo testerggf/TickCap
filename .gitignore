@@ -16,3 +16,5 @@ coverage/
 # misc
 .DS_Store
 *.log
+apps/web/e2e/*.png
+next-env.d.ts
