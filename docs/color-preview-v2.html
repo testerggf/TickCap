@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TickCap 色彩方案预览 V2 · 大胆版</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "HarmonyOS Sans", "MiSans", sans-serif;
+    background: #101014; color: #F2F0ED; padding: 32px 20px 64px;
+  }
+  .page { max-width: 1180px; margin: 0 auto; }
+  h1 { font-size: 26px; margin-bottom: 8px; }
+  .lead { color: #A5A09A; font-size: 15px; line-height: 1.6; max-width: 760px; margin-bottom: 40px; }
+  .scheme-block { margin-bottom: 64px; }
+  .scheme-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .scheme-head h2 { font-size: 21px; }
+  .badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: linear-gradient(135deg,#FF4FA0,#FF8E3C); color: #fff; }
+  .scheme-desc { color: #A5A09A; font-size: 14px; line-height: 1.7; margin-bottom: 20px; max-width: 760px; }
+  .phones { display: flex; gap: 28px; flex-wrap: wrap; }
+  .phone-wrap { text-align: center; }
+  .phone-label { font-size: 13px; color: #A5A09A; margin-top: 10px; }
+
+  /* ============ 手机框基础 ============ */
+  .phone {
+    width: 300px; height: 560px; border-radius: 40px; padding: 14px 12px 10px;
+    background: var(--bg); background-image: var(--bg-img, none);
+    color: var(--t1);
+    border: 6px solid #26221F; box-shadow: 0 20px 50px rgba(0,0,0,.5);
+    display: flex; flex-direction: column; overflow: hidden; text-align: left;
+    font-size: 13px; position: relative;
+  }
+  .topbar { padding: 6px 8px 10px; position: relative; z-index: 2; }
+  .topbar-row { display: flex; align-items: center; justify-content: space-between; }
+  .date { font-size: 17px; font-weight: 700; letter-spacing: -.2px; }
+  .arrow { color: var(--t3); font-size: 14px; font-weight: 400; }
+  .seal-btn { font-size: 11px; font-weight: 600; color: var(--primary); background: var(--primary-soft); padding: 4px 10px; border-radius: 99px; }
+  .sub { font-size: 11px; color: var(--t3); margin-top: 4px; }
+
+  .timeline { flex: 1; padding: 6px 4px 0 6px; position: relative; overflow: hidden; z-index: 1; }
+  .row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .tick { width: 38px; flex-shrink: 0; text-align: right; font-size: 10px; color: var(--t3); padding-top: 4px; font-variant-numeric: tabular-nums; }
+  .rail { width: 14px; flex-shrink: 0; display: flex; justify-content: center; position: relative; }
+  .rail::before { content: ""; position: absolute; top: 0; bottom: -8px; width: 1.5px; background: var(--border); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--tag); border: 2px solid transparent; position: relative; top: 6px; z-index: 1; }
+  .dot.mood { width: auto; height: auto; background: none; border: none; font-size: 11px; top: 3px; }
+  .card {
+    flex: 1; border-radius: 16px; padding: 8px 10px 8px 14px; position: relative;
+    background: color-mix(in srgb, var(--tag) 11%, var(--surface));
+  }
+  .card::before { content: ""; position: absolute; left: 4px; top: 8px; bottom: 8px; width: 4px; border-radius: 4px; background: var(--tag); }
+  .card .t { font-size: 13px; font-weight: 600; }
+  .card .d { font-size: 11px; color: var(--t2); margin-top: 2px; }
+  .dur { float: right; font-size: 10px; color: var(--t3); font-variant-numeric: tabular-nums; }
+  .card.tall { padding-top: 14px; padding-bottom: 14px; }
+  .gap-row .card { background: none !important; box-shadow: none !important; border: 1.5px dashed var(--border); backdrop-filter: none !important; color: var(--t3); font-size: 11px; text-align: center; padding: 10px; }
+  .gap-row .card::before { display: none; }
+  .now { display: flex; align-items: center; gap: 6px; margin: 4px 0 0 44px; }
+  .now-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); animation: breathe 3s ease-in-out infinite; }
+  .now-line { flex: 1; height: 1.5px; background: var(--primary); opacity: .75; }
+  .now-time { font-size: 10px; color: var(--primary); font-weight: 700; font-variant-numeric: tabular-nums; }
+  @keyframes breathe { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: .4; transform: scale(.8);} }
+
+  .tickbar { padding: 10px 6px 6px; position: relative; z-index: 2; }
+  .chips { display: flex; gap: 6px; margin-bottom: 8px; overflow: hidden; }
+  .chip { font-size: 11px; padding: 5px 10px; border-radius: 99px; white-space: nowrap; background: var(--surface2); color: var(--t2); font-weight: 500; }
+  .chip.on { background: var(--primary-soft); color: var(--primary); font-weight: 700; }
+  .inputrow { display: flex; gap: 8px; align-items: center; }
+  .input { flex: 1; background: var(--surface2); border-radius: 14px; padding: 9px 12px; font-size: 12px; color: var(--t3); }
+  .fab {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--fab-bg, var(--primary));
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    color: #fff; font-size: 16px; font-weight: 700;
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--primary) 45%, transparent);
+  }
+
+  /* ============ D · 液态玻璃（Apple Liquid Glass）============ */
+  .glass .card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(18px) saturate(170%); -webkit-backdrop-filter: blur(18px) saturate(170%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 20px rgba(10,20,50,.08), inset 0 1px 0 rgba(255,255,255,.35);
+    border-radius: 18px;
+  }
+  .glass .tickbar {
+    margin: 0 2px 2px; border-radius: 22px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(170%); -webkit-backdrop-filter: blur(20px) saturate(170%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 -4px 24px rgba(10,20,50,.08), inset 0 1px 0 rgba(255,255,255,.4);
+    padding: 10px 8px 8px;
+  }
+  .glass .chip { background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
+  .glass .input { background: var(--glass-bg); border: 1px solid var(--glass-border); }
+  .glass .seal-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
+  .glass .chip.on { background: var(--primary); color: #fff; border-color: transparent; }
+  .glass .now-dot, .glass .now-line { box-shadow: 0 0 8px var(--primary); }
+
+  /* ============ E · 多巴胺糖果 ============ */
+  .dopa .card {
+    background: var(--surface);
+    border: 1.5px solid color-mix(in srgb, var(--tag) 45%, var(--surface));
+    box-shadow: 3px 4px 0 color-mix(in srgb, var(--tag) 30%, transparent);
+    border-radius: 18px;
+  }
+  .dopa .card::before { width: 5px; filter: saturate(1.35); }
+  .dopa .dot { filter: saturate(1.35); }
+  .dopa .card .t { font-weight: 700; }
+  .dopa .date { font-weight: 800; }
+  .dopa .chip { font-weight: 700; }
+  .dopa .chip.on { background: var(--fab-bg); color: #fff; box-shadow: 2px 3px 0 color-mix(in srgb, var(--primary) 35%, transparent); }
+  .dopa .fab { box-shadow: 0 6px 0 color-mix(in srgb, var(--primary) 40%, transparent); border-radius: 18px; }
+  .dopa .seal-btn { font-weight: 800; }
+
+  /* ============ F · 暮色霓虹 ============ */
+  .neon .card { border: 1px solid rgba(255,255,255,.07); }
+  .neon .card::before { box-shadow: 0 0 10px color-mix(in srgb, var(--tag) 70%, transparent); }
+  .neon .dot { box-shadow: 0 0 8px var(--tag); }
+  .neon .now-line { background: linear-gradient(90deg, #FF5C87, #FFB56B); height: 2px; box-shadow: 0 0 12px rgba(255,92,135,.8); opacity: 1; }
+  .neon .now-dot { background: #FF5C87; box-shadow: 0 0 10px #FF5C87; }
+  .neon .now-time { background: linear-gradient(90deg,#FF5C87,#FFB56B); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .neon .fab { box-shadow: 0 0 22px rgba(255,92,135,.55); }
+  .neon .chip.on { background: linear-gradient(135deg, rgba(255,92,135,.25), rgba(255,181,107,.25)); color: #FFB56B; }
+  .neon.light-mode .card { border: none; box-shadow: 0 2px 10px rgba(120,60,90,.08); }
+
+  /* ============ G · 果冻胶囊（玻璃 × 多巴胺）============ */
+  .jelly .card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(200%); -webkit-backdrop-filter: blur(16px) saturate(200%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--tag) 18%, transparent), inset 0 1px 0 rgba(255,255,255,.45);
+    border-radius: 20px;
+  }
+  .jelly .card::before { width: 5px; filter: saturate(1.4); box-shadow: 0 0 6px color-mix(in srgb, var(--tag) 50%, transparent); }
+  .jelly .dot { filter: saturate(1.4); }
+  .jelly .tickbar {
+    margin: 0 2px 2px; border-radius: 24px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(200%); -webkit-backdrop-filter: blur(20px) saturate(200%);
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+    padding: 10px 8px 8px;
+  }
+  .jelly .chip { background: var(--glass-bg); border: 1px solid var(--glass-border); font-weight: 600; }
+  .jelly .chip.on { background: var(--fab-bg); color: #fff; border-color: transparent; }
+  .jelly .input { background: var(--glass-bg); border: 1px solid var(--glass-border); }
+  .jelly .seal-btn { background: var(--fab-bg); color: #fff; }
+  .jelly .fab { box-shadow: 0 8px 20px color-mix(in srgb, var(--primary) 50%, transparent); }
+  .jelly .card .t { font-weight: 700; }
+
+  .swatches { display: flex; gap: 8px; margin: 14px 0 6px; flex-wrap: wrap; }
+  .sw { width: 96px; border-radius: 10px; overflow: hidden; border: 1px solid #33302C; background: #1B1A18; }
+  .sw .c { height: 40px; }
+  .sw .n { font-size: 10px; color: #A5A09A; padding: 5px 7px; line-height: 1.4; }
+
+  .howto { background: #1B1A18; border: 1px solid #33302C; border-radius: 16px; padding: 24px; max-width: 800px; line-height: 1.8; font-size: 14.5px; }
+  .howto h2 { font-size: 18px; margin-bottom: 10px; }
+  .howto li { margin-left: 20px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>TickCap 主色方案 V2 · 大胆版</h1>
+  <p class="lead">这一轮不再"中规中矩"：<b>D</b> 是苹果 2025 年最新设计语言 Liquid Glass（液态玻璃）的正统演绎；<b>E</b> 是纯多巴胺糖果风；<b>F</b> 是深色霓虹渐变；<b>G</b> 是玻璃 × 多巴胺的混血——彩色果冻质感。每个都有浅色/深色两种模式。风格和颜色可以拆开选（比如"G 的质感 + D 的克制配色"），先凭直觉挑最想每天打开的那个。</p>
+
+  <div id="blocks"></div>
+
+  <div class="howto">
+    <h2>四个版本的性格</h2>
+    <li><b>D · 液态玻璃</b>：最"苹果"。彩色晕染背景上悬浮着毛玻璃卡片和悬浮式滴答栏，克制但高级，iOS 用户会觉得"这就是原生应用"。风险：玻璃风对文字可读性有代价（苹果自己也因此被批评），我们已控制在安全范围。</li>
+    <li><b>E · 多巴胺糖果</b>：最快乐。奶油底 + 高饱和糖果色 + 彩色硬阴影，每颗胶囊像一块软糖，年轻、有梗、适合传播截图。风险：长期使用可能视觉疲劳，深夜封存场景偏"吵"。</li>
+    <li><b>F · 暮色霓虹</b>：最酷。近黑紫底上霓虹渐变发光，"现在线"是一道粉橙光。夜间体验极佳、极有辨识度。风险：白天通勤场景深色略压抑（它的浅色模式是晨曦暖调，专为白天设计）。</li>
+    <li><b>G · 果冻胶囊</b>：<b>玻璃的高级 + 多巴胺的快乐</b>，彩色晕染底上悬浮着微微发光的果冻卡片，滴答按钮是粉橙渐变。最"眼前一亮"，也最有自己的记忆点——别人问"这是什么 App"的概率最高。</li>
+    <p style="margin-top:12px">提示：无论选哪个，色彩系统仍是令牌化的——质感（玻璃/实心/发光）和色相（粉/蓝/橙）可以自由组合微调，选个大方向即可。</p>
+  </div>
+</div>
+
+<template id="phone-tpl">
+  <div class="phone">
+    <div class="topbar">
+      <div class="topbar-row">
+        <span class="date"><span class="arrow">‹</span> 7月27日 周一 <span class="arrow">›</span></span>
+        <span class="seal-btn">🌙 封存</span>
+      </div>
+      <div class="sub">已滴答 4 次 · 连续 12 天</div>
+    </div>
+    <div class="timeline">
+      <div class="row" style="--tag:#F59E0B">
+        <div class="tick">07:00</div>
+        <div class="rail"><div class="dot"></div></div>
+        <div class="card"><span class="dur">20m</span><div class="t">☀️ 起床</div></div>
+      </div>
+      <div class="row" style="--tag:#0EA5E9">
+        <div class="tick">07:20</div>
+        <div class="rail"><div class="dot mood">🙂</div></div>
+        <div class="card"><span class="dur">1h</span><div class="t">🚇 通勤</div><div class="d">地铁上看完那篇讲定价的文章</div></div>
+      </div>
+      <div class="row" style="--tag:#4C7DFF">
+        <div class="tick">09:00</div>
+        <div class="rail"><div class="dot"></div></div>
+        <div class="card tall"><span class="dur">2h</span><div class="t">💼 写 Q3 方案 ⭐</div><div class="d">终于把定价那节写顺了</div></div>
+      </div>
+      <div class="row" style="--tag:#94A3B8">
+        <div class="tick">11:00</div>
+        <div class="rail"><div class="dot"></div></div>
+        <div class="card"><span class="dur">30m</span><div class="t">🌫 摸鱼</div></div>
+      </div>
+      <div class="row gap-row">
+        <div class="tick"></div>
+        <div class="rail"></div>
+        <div class="card">2.5h 空白 · 补一颗？</div>
+      </div>
+      <div class="now">
+        <div class="now-dot"></div><div class="now-line"></div><span class="now-time">14:32</span>
+      </div>
+    </div>
+    <div class="tickbar">
+      <div class="chips">
+        <span class="chip on">💼 工作</span><span class="chip">📖 学习</span><span class="chip">🍜 吃饭</span><span class="chip">🌫 摸鱼</span>
+      </div>
+      <div class="inputrow">
+        <div class="input">这段时间在做什么…</div>
+        <div class="fab">●</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+const schemes = [
+  {
+    id: 'D', klass: 'glass', name: '方案 D · 液态玻璃 Liquid Glass', badge: '最苹果',
+    desc: '苹果 iOS 26 设计语言的演绎：彩色光晕在背景流动，胶囊是悬浮的毛玻璃，滴答栏是一块浮起来的玻璃岛。克制、通透、高级。',
+    light: {
+      bg:'#E9EFF9',
+      bgImg:'radial-gradient(circle at 15% 8%, rgba(10,132,255,.20), transparent 45%), radial-gradient(circle at 90% 25%, rgba(255,105,180,.16), transparent 45%), radial-gradient(circle at 30% 95%, rgba(175,130,255,.20), transparent 50%)',
+      surface:'#FFFFFF', surface2:'rgba(255,255,255,.55)', border:'rgba(120,140,180,.28)',
+      t1:'#101828', t2:'#51607A', t3:'#8A97AE', primary:'#0A84FF', soft:'rgba(10,132,255,.12)',
+      fab:'linear-gradient(135deg,#0A84FF,#64D2FF)',
+      glassBg:'rgba(255,255,255,.55)', glassBorder:'rgba(255,255,255,.7)',
+    },
+    dark: {
+      bg:'#0B0F1A',
+      bgImg:'radial-gradient(circle at 15% 8%, rgba(10,132,255,.28), transparent 45%), radial-gradient(circle at 90% 25%, rgba(191,90,242,.22), transparent 45%), radial-gradient(circle at 30% 95%, rgba(64,200,224,.18), transparent 50%)',
+      surface:'#1A2030', surface2:'rgba(40,50,75,.5)', border:'rgba(150,170,210,.18)',
+      t1:'#F2F5FA', t2:'#9BA8C2', t3:'#61708F', primary:'#409CFF', soft:'rgba(64,156,255,.16)',
+      fab:'linear-gradient(135deg,#0A84FF,#64D2FF)',
+      glassBg:'rgba(30,38,58,.5)', glassBorder:'rgba(255,255,255,.12)',
+    },
+  },
+  {
+    id: 'E', klass: 'dopa', name: '方案 E · 多巴胺糖果 Dopamine Pop', badge: '最快乐',
+    desc: '奶油底 + 高饱和糖果色 + 彩色硬阴影，每颗胶囊像一块软糖，字重加粗、态度鲜明。打开它心情就变好。',
+    light: {
+      bg:'#FFF6EA', bgImg:'none',
+      surface:'#FFFFFF', surface2:'#FFE9D2', border:'#F3D9BC',
+      t1:'#2B1B10', t2:'#8A6A50', t3:'#C0A183', primary:'#FF3D8A', soft:'#FFE3F0',
+      fab:'linear-gradient(135deg,#FF3D8A,#FF9E2C)',
+      glassBg:'#fff', glassBorder:'#fff',
+    },
+    dark: {
+      bg:'#221430', bgImg:'none',
+      surface:'#31204A', surface2:'#3D2A58', border:'#4E3870',
+      t1:'#FFF2E8', t2:'#C7AED6', t3:'#8A6FA6', primary:'#FF5C9E', soft:'#4A2340',
+      fab:'linear-gradient(135deg,#FF5C9E,#FFB13C)',
+      glassBg:'#31204A', glassBorder:'#4E3870',
+    },
+  },
+  {
+    id: 'F', klass: 'neon', name: '方案 F · 暮色霓虹 Neon Dusk', badge: '最酷',
+    desc: '深色优先：近黑的暮紫底上，胶囊色条微微发光，"现在线"是一道粉橙霓虹。夜里封存一天的时候，它是最有氛围的。白天则切到晨曦暖调浅色模式。',
+    light: {
+      bg:'#FFF4EE',
+      bgImg:'radial-gradient(circle at 80% 10%, rgba(255,140,105,.18), transparent 50%), radial-gradient(circle at 10% 90%, rgba(180,120,255,.14), transparent 50%)',
+      surface:'#FFFFFF', surface2:'#F7E8E2', border:'#EED9D0',
+      t1:'#291B22', t2:'#7A626E', t3:'#B39AA5', primary:'#F0447C', soft:'#FFE4EE',
+      fab:'linear-gradient(135deg,#FF5C87,#FFB56B)',
+      glassBg:'#fff', glassBorder:'#fff',
+    },
+    dark: {
+      bg:'#0E0A18',
+      bgImg:'radial-gradient(circle at 50% -10%, rgba(140,80,220,.25), transparent 55%)',
+      surface:'#181229', surface2:'#231A38', border:'#2E2447',
+      t1:'#F5F1FF', t2:'#A99DC7', t3:'#6B5F8A', primary:'#FF5C87', soft:'rgba(255,92,135,.14)',
+      fab:'linear-gradient(135deg,#FF5C87,#FFB56B)',
+      glassBg:'#181229', glassBorder:'#2E2447',
+    },
+  },
+  {
+    id: 'G', klass: 'jelly', name: '方案 G · 果冻胶囊 Jelly Glass', badge: '玻璃×多巴胺',
+    desc: '两种风格的混血：多巴胺的彩色光晕当背景，胶囊是带一点点发光的果冻玻璃，滴答按钮是粉橙渐变。高级和快乐同时在场——最"眼前一亮"的一版。',
+    light: {
+      bg:'#FCF2FA',
+      bgImg:'radial-gradient(circle at 12% 10%, rgba(255,84,163,.22), transparent 45%), radial-gradient(circle at 92% 20%, rgba(255,180,60,.22), transparent 45%), radial-gradient(circle at 20% 95%, rgba(90,200,250,.22), transparent 50%), radial-gradient(circle at 85% 90%, rgba(150,120,255,.18), transparent 45%)',
+      surface:'#FFFFFF', surface2:'rgba(255,255,255,.6)', border:'rgba(200,140,190,.3)',
+      t1:'#26121F', t2:'#7A5570', t3:'#B58BA8', primary:'#FF4FA0', soft:'rgba(255,79,160,.13)',
+      fab:'linear-gradient(135deg,#FF4FA0,#FF8E3C)',
+      glassBg:'rgba(255,255,255,.55)', glassBorder:'rgba(255,255,255,.75)',
+    },
+    dark: {
+      bg:'#150F20',
+      bgImg:'radial-gradient(circle at 12% 10%, rgba(255,84,163,.28), transparent 45%), radial-gradient(circle at 92% 20%, rgba(255,160,60,.20), transparent 45%), radial-gradient(circle at 25% 95%, rgba(90,160,255,.22), transparent 50%)',
+      surface:'#221A33', surface2:'rgba(60,45,85,.5)', border:'rgba(200,150,220,.2)',
+      t1:'#FBF3FA', t2:'#C2A8C4', t3:'#7E6690', primary:'#FF6BB0', soft:'rgba(255,107,176,.16)',
+      fab:'linear-gradient(135deg,#FF4FA0,#FF8E3C)',
+      glassBg:'rgba(45,32,70,.5)', glassBorder:'rgba(255,255,255,.14)',
+    },
+  },
+];
+
+const tpl = document.getElementById('phone-tpl');
+const blocks = document.getElementById('blocks');
+
+for (const s of schemes) {
+  const block = document.createElement('div');
+  block.className = 'scheme-block';
+  block.innerHTML = `
+    <div class="scheme-head"><h2>${s.name}</h2><span class="badge">${s.badge}</span></div>
+    <p class="scheme-desc">${s.desc}</p>
+    <div class="swatches">
+      ${[['主色', s.light.primary], ['浅色底', s.light.bg], ['深色底', s.dark.bg]].map(([n, c]) =>
+        `<div class="sw"><div class="c" style="background:${c}"></div><div class="n">${n}<br>${c}</div></div>`).join('')}
+      <div class="sw"><div class="c" style="background:${s.light.fab}"></div><div class="n">滴答按钮<br>渐变</div></div>
+    </div>
+    <div class="phones"></div>`;
+  const phones = block.querySelector('.phones');
+
+  for (const mode of ['light', 'dark']) {
+    const v = s[mode];
+    const wrap = document.createElement('div');
+    wrap.className = 'phone-wrap';
+    const node = tpl.content.cloneNode(true);
+    const phone = node.querySelector('.phone');
+    phone.classList.add(s.klass, mode === 'light' ? 'light-mode' : 'dark-mode');
+    phone.style.cssText += `--bg:${v.bg};--bg-img:${v.bgImg};--surface:${v.surface};--surface2:${v.surface2};--border:${v.border};--t1:${v.t1};--t2:${v.t2};--t3:${v.t3};--primary:${v.primary};--primary-soft:${v.soft};--fab-bg:${v.fab};--glass-bg:${v.glassBg};--glass-border:${v.glassBorder};`;
+    wrap.appendChild(node);
+    const label = document.createElement('div');
+    label.className = 'phone-label';
+    label.textContent = mode === 'light' ? '☀️ 浅色模式' : '🌙 深色模式（睡前封存场景）';
+    wrap.appendChild(label);
+    phones.appendChild(wrap);
+  }
+  blocks.appendChild(block);
+}
+</script>
+</body>
+</html>

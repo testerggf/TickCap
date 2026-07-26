@@ -1,0 +1,11 @@
+{
+  "name": "@tickcap/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "设计令牌（JSON 源 → 各端产物）。唯一权威：docs/06 §3",
+  "main": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

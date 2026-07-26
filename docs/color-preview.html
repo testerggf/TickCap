@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TickCap 色彩方案预览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "HarmonyOS Sans", "MiSans", sans-serif;
+    background: #ECE9E4; color: #211C16; padding: 32px 20px 64px;
+  }
+  .page { max-width: 1180px; margin: 0 auto; }
+  h1 { font-size: 26px; margin-bottom: 8px; }
+  .lead { color: #6F6659; font-size: 15px; line-height: 1.6; max-width: 720px; margin-bottom: 40px; }
+  .scheme-block { margin-bottom: 56px; }
+  .scheme-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .scheme-head h2 { font-size: 20px; }
+  .badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: #211C16; color: #fff; }
+  .scheme-desc { color: #6F6659; font-size: 14px; line-height: 1.6; margin-bottom: 18px; max-width: 720px; }
+  .phones { display: flex; gap: 28px; flex-wrap: wrap; }
+  .phone-wrap { text-align: center; }
+  .phone-label { font-size: 13px; color: #6F6659; margin-top: 10px; }
+
+  /* ---------- 手机框 ---------- */
+  .phone {
+    width: 300px; height: 560px; border-radius: 40px; padding: 14px 12px 10px;
+    background: var(--bg); color: var(--t1);
+    border: 6px solid #2A2624; box-shadow: 0 16px 40px rgba(33,28,22,.18);
+    display: flex; flex-direction: column; overflow: hidden; text-align: left;
+    font-size: 13px;
+  }
+  .topbar { padding: 6px 8px 10px; }
+  .topbar-row { display: flex; align-items: center; justify-content: space-between; }
+  .date { font-size: 17px; font-weight: 600; }
+  .arrow { color: var(--t3); font-size: 14px; }
+  .seal-btn {
+    font-size: 11px; font-weight: 600; color: var(--primary);
+    background: var(--primary-soft); padding: 4px 10px; border-radius: 99px;
+  }
+  .sub { font-size: 11px; color: var(--t3); margin-top: 4px; }
+
+  .timeline { flex: 1; padding: 6px 4px 0 6px; position: relative; overflow: hidden; }
+  .row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .tick { width: 38px; flex-shrink: 0; text-align: right; font-size: 10px; color: var(--t3); padding-top: 4px; font-variant-numeric: tabular-nums; }
+  .rail { width: 14px; flex-shrink: 0; display: flex; justify-content: center; position: relative; }
+  .rail::before { content: ""; position: absolute; top: 0; bottom: -8px; width: 1.5px; background: var(--border); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--tag); border: 2px solid var(--bg); position: relative; top: 6px; z-index: 1; }
+  .dot.mood { width: auto; height: auto; background: none; border: none; font-size: 11px; top: 3px; }
+  .card {
+    flex: 1; border-radius: 14px; padding: 8px 10px; position: relative;
+    background: color-mix(in srgb, var(--tag) 11%, var(--surface));
+    box-shadow: 0 1px 3px rgba(33,28,22,.06);
+  }
+  .card::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3.5px; border-radius: 4px; background: var(--tag); }
+  .card .t { font-size: 13px; font-weight: 600; }
+  .card .d { font-size: 11px; color: var(--t2); margin-top: 2px; }
+  .dur { float: right; font-size: 10px; color: var(--t3); font-variant-numeric: tabular-nums; }
+  .card.tall { padding-top: 14px; padding-bottom: 14px; }
+  .gap-row .card {
+    background: none; box-shadow: none; border: 1.5px dashed var(--border);
+    color: var(--t3); font-size: 11px; text-align: center; padding: 10px;
+  }
+  .gap-row .card::before { display: none; }
+  .now { display: flex; align-items: center; gap: 6px; margin: 4px 0 0 44px; }
+  .now-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); animation: breathe 3s ease-in-out infinite; }
+  .now-line { flex: 1; height: 1.5px; background: var(--primary); opacity: .7; }
+  .now-time { font-size: 10px; color: var(--primary); font-weight: 600; font-variant-numeric: tabular-nums; }
+  @keyframes breathe { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: .45; transform: scale(.8);} }
+
+  .tickbar { padding: 10px 6px 6px; border-top: 1px solid var(--border); background: var(--bg); }
+  .chips { display: flex; gap: 6px; margin-bottom: 8px; overflow: hidden; }
+  .chip {
+    font-size: 11px; padding: 5px 10px; border-radius: 99px; white-space: nowrap;
+    background: var(--surface2); color: var(--t2); font-weight: 500;
+  }
+  .chip.on { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+  .inputrow { display: flex; gap: 8px; align-items: center; }
+  .input {
+    flex: 1; background: var(--surface2); border-radius: 12px; padding: 9px 12px;
+    font-size: 12px; color: var(--t3);
+  }
+  .fab {
+    width: 42px; height: 42px; border-radius: 50%; background: var(--primary);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    color: #fff; font-size: 16px; font-weight: 700;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 40%, transparent);
+  }
+
+  .swatches { display: flex; gap: 8px; margin: 14px 0 4px; flex-wrap: wrap; }
+  .sw { width: 92px; border-radius: 10px; overflow: hidden; border: 1px solid #DDD6CB; background: #fff; }
+  .sw .c { height: 40px; }
+  .sw .n { font-size: 10px; color: #6F6659; padding: 5px 7px; line-height: 1.4; }
+
+  .howto { background: #fff; border-radius: 16px; padding: 24px; max-width: 760px; line-height: 1.8; font-size: 14.5px; }
+  .howto h2 { font-size: 18px; margin-bottom: 10px; }
+  .howto li { margin-left: 20px; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>TickCap 主色方案 · 感官评审</h1>
+  <p class="lead">同一个「今日页」，三套配色，各配浅色/深色两种模式。<b>别分析，凭直觉</b>：想象你每天要打开它十几次、每晚睡前在它里面封存一天——哪一个让你最想住进去？标签色（胶囊的颜色）三套方案完全相同，你只需要感受<b>底色气质</b>和<b>主色</b>（滴答按钮、现在线、封存按钮的颜色）。</p>
+
+  <div id="blocks"></div>
+
+  <div class="howto">
+    <h2>怎么选</h2>
+    <li><b>方案 A 暮光琥珀</b>：暖纸底 + 琥珀橙。气质是"手账、黄昏、温度"，情感记录属性最强，最不像办公软件。<b>我的推荐</b>，理由：我们的差异化就是"有温度的记录"，视觉应该第一眼就传达这一点。</li>
+    <li><b>方案 B 晨雾靛蓝</b>：冷纸底 + 靛蓝。气质是"专注、理性、效率工具"，最接近 Structured/Notion 的感觉，职场人群接受度最稳，但也最容易泯然于众多效率 App。</li>
+    <li><b>方案 C 青瓷时光</b>：青纸底 + 青瓷绿。气质是"平静、治愈、冥想感"，接近 Headspace/苹果健康的路线，独特性不错，但绿色系在"工作记录"场景略显疏离。</li>
+    <p style="margin-top:12px">看的时候重点感受三处：① 深色模式舒不舒服（封存都在睡前，深色使用占比会很高）；② 主色按钮想不想按；③ 胶囊卡片挂在底色上是否清爽。选定后我把令牌写进代码，之后随时可以整体换肤——这个决策可以推翻，不用有压力。</p>
+  </div>
+</div>
+
+<template id="phone-tpl">
+  <div class="phone">
+    <div class="topbar">
+      <div class="topbar-row">
+        <span class="date"><span class="arrow">‹</span> 7月27日 周一 <span class="arrow">›</span></span>
+        <span class="seal-btn">🌙 封存</span>
+      </div>
+      <div class="sub">已滴答 4 次 · 连续 12 天</div>
+    </div>
+    <div class="timeline">
+      <div class="row" style="--tag:#F59E0B">
+        <div class="tick">07:00</div>
+        <div class="rail"><div class="dot"></div></div>
+        <div class="card"><span class="dur">20m</span><div class="t">☀️ 起床</div></div>
+      </div>
+      <div class="row" style="--tag:#0EA5E9">
+        <div class="tick">07:20</div>
+        <div class="rail"><div class="dot mood">🙂</div></div>
+        <div class="card"><span class="dur">1h</span><div class="t">🚇 通勤</div><div class="d">地铁上看完那篇讲定价的文章</div></div>
+      </div>
+      <div class="row" style="--tag:#4C7DFF">
+        <div class="tick">09:00</div>
+        <div class="rail"><div class="dot"></div></div>
+        <div class="card tall"><span class="dur">2h</span><div class="t">💼 写 Q3 方案 ⭐</div><div class="d">终于把定价那节写顺了</div></div>
+      </div>
+      <div class="row" style="--tag:#94A3B8">
+        <div class="tick">11:00</div>
+        <div class="rail"><div class="dot"></div></div>
+        <div class="card"><span class="dur">30m</span><div class="t">🌫 摸鱼</div></div>
+      </div>
+      <div class="row gap-row">
+        <div class="tick"></div>
+        <div class="rail"></div>
+        <div class="card">2.5h 空白 · 补一颗？</div>
+      </div>
+      <div class="now">
+        <div class="now-dot"></div><div class="now-line"></div><span class="now-time">14:32</span>
+      </div>
+    </div>
+    <div class="tickbar">
+      <div class="chips">
+        <span class="chip on">💼 工作</span><span class="chip">📖 学习</span><span class="chip">🍜 吃饭</span><span class="chip">🌫 摸鱼</span>
+      </div>
+      <div class="inputrow">
+        <div class="input">这段时间在做什么…</div>
+        <div class="fab">●</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+const schemes = [
+  {
+    id: 'A', name: '方案 A · 暮光琥珀', badge: '推荐',
+    desc: '暖纸白 / 暖炭黑底色，主色是黄昏的琥珀橙。像一本手账，温度感最强。',
+    light: { bg:'#FAF7F2', surface:'#FFFFFF', surface2:'#F3EEE7', border:'#E8E1D6', t1:'#211C16', t2:'#6F6659', t3:'#A99E8E', primary:'#E8590C', soft:'#FFF0E6' },
+    dark:  { bg:'#171412', surface:'#211D1A', surface2:'#2B2622', border:'#3A342E', t1:'#F4EFE8', t2:'#A89E90', t3:'#6E655A', primary:'#FF8A4C', soft:'#3D2417' },
+  },
+  {
+    id: 'B', name: '方案 B · 晨雾靛蓝', badge: '',
+    desc: '冷调纸白 / 蓝黑底色，主色是沉稳的靛蓝。像一件专注的效率工具，职场感最强。',
+    light: { bg:'#F7F8FB', surface:'#FFFFFF', surface2:'#EEF0F5', border:'#E2E5EC', t1:'#1B1D26', t2:'#626775', t3:'#9AA0AE', primary:'#4F46E5', soft:'#EEF0FF' },
+    dark:  { bg:'#14151C', surface:'#1D1F29', surface2:'#262937', border:'#343849', t1:'#EEF0F6', t2:'#9AA0B0', t3:'#666C7C', primary:'#8B93FF', soft:'#232645' },
+  },
+  {
+    id: 'C', name: '方案 C · 青瓷时光', badge: '',
+    desc: '青调纸白 / 墨绿黑底色，主色是青瓷绿。像一次冥想练习，平静治愈感最强。',
+    light: { bg:'#F5F9F7', surface:'#FFFFFF', surface2:'#EAF2EE', border:'#DDE8E2', t1:'#17211D', t2:'#5F6E68', t3:'#96A69F', primary:'#0E8A72', soft:'#E3F5EF' },
+    dark:  { bg:'#121816', surface:'#1B2320', surface2:'#242E2A', border:'#32403A', t1:'#ECF4F0', t2:'#93A69E', t3:'#5F7069', primary:'#34D0AC', soft:'#16352D' },
+  },
+];
+
+const tpl = document.getElementById('phone-tpl');
+const blocks = document.getElementById('blocks');
+
+for (const s of schemes) {
+  const block = document.createElement('div');
+  block.className = 'scheme-block';
+  block.innerHTML = `
+    <div class="scheme-head"><h2>${s.name}</h2>${s.badge ? `<span class="badge">${s.badge}</span>` : ''}</div>
+    <p class="scheme-desc">${s.desc}</p>
+    <div class="swatches">
+      ${[['主色', s.light.primary], ['主色·深色版', s.dark.primary], ['浅色底', s.light.bg], ['深色底', s.dark.bg]].map(([n, c]) =>
+        `<div class="sw"><div class="c" style="background:${c}"></div><div class="n">${n}<br>${c}</div></div>`).join('')}
+    </div>
+    <div class="phones"></div>`;
+  const phones = block.querySelector('.phones');
+
+  for (const mode of ['light', 'dark']) {
+    const v = s[mode];
+    const wrap = document.createElement('div');
+    wrap.className = 'phone-wrap';
+    const node = tpl.content.cloneNode(true);
+    const phone = node.querySelector('.phone');
+    phone.style.cssText += `--bg:${v.bg};--surface:${v.surface};--surface2:${v.surface2};--border:${v.border};--t1:${v.t1};--t2:${v.t2};--t3:${v.t3};--primary:${v.primary};--primary-soft:${v.soft};`;
+    wrap.appendChild(node);
+    const label = document.createElement('div');
+    label.className = 'phone-label';
+    label.textContent = mode === 'light' ? '☀️ 浅色模式' : '🌙 深色模式（睡前封存场景）';
+    wrap.appendChild(label);
+    phones.appendChild(wrap);
+  }
+  blocks.appendChild(block);
+}
+</script>
+</body>
+</html>

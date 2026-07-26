@@ -1,0 +1,18 @@
+# deps
+node_modules/
+
+# builds
+.next/
+dist/
+out/
+.turbo/
+coverage/
+
+# env & secrets（密钥永不入库）
+.env
+.env.*
+!.env.example
+
+# misc
+.DS_Store
+*.log

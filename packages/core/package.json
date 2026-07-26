@@ -1,0 +1,12 @@
+{
+  "name": "@tickcap/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "领域模型与业务规则（纯 TS，平台无关）：归属日、时间推断、streak、空隙、统计。规格见 docs/07 §2",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo 'TODO: vitest'",
+    "typecheck": "tsc --noEmit"
+  }
+}

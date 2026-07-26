@@ -1,0 +1,6 @@
+{
+  "name": "@tickcap/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Web H5 应用（Next.js，移动优先 PWA）。结构规格见 docs/07 §5"
+}
