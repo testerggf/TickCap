@@ -3,8 +3,5 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "API 服务（Hono + Drizzle + PostgreSQL）。模块规格见 docs/07 §6",
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  }
+  "description": "API 服务（Hono + Drizzle + PostgreSQL）。模块规格见 docs/07 §6"
 }

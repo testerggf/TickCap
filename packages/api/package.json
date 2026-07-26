@@ -4,8 +4,5 @@
   "private": true,
   "type": "module",
   "description": "API 类型与客户端（zod schema 前后端共享）。契约唯一权威：docs/07 §4",
-  "main": "src/index.ts",
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  }
+  "main": "src/index.ts"
 }

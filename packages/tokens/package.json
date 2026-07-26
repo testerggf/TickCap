@@ -3,9 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "设计令牌（JSON 源 → 各端产物）。唯一权威：docs/06 §3",
+  "description": "设计令牌（含颜色工具与可读性校验）。唯一权威：docs/06 §3",
   "main": "src/index.ts",
+  "exports": { ".": "./src/index.ts" },
   "scripts": {
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.8"
   }
 }

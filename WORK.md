@@ -6,15 +6,16 @@
 
 **阶段一 · MVP「能记录，能封存」**（目标 8 周，见 [路线图](docs/04-路线图.md)）— 第 1 周。
 
-产品/架构/UI/技术文档（01–10）全部落地并通过评审；UI 定稿「果冻胶囊」；monorepo 骨架已建。**尚未写任何业务代码。**
+文档（01–10）齐备已评审；UI 定稿「果冻胶囊」；仓库已推 GitHub。`@tickcap/tokens` 与 `@tickcap/core` 完成且 51 个测试全绿。下一步：今日页代码原型（真机验收手感）。
 
 ## 阶段一清单
 
 - [x] 产品文档全集（01–10）+ 第一次全集评审
 - [x] UI 方向定稿（果冻胶囊 G，预览基准 docs/color-preview-v2.html）
 - [x] git init + monorepo 骨架（pnpm + turbo，apps/web·server，packages/core·api·tokens）
-- [ ] `@tickcap/tokens`：06 §3 全部令牌 → JSON + Tailwind 映射
-- [ ] `@tickcap/core`：领域规则（归属日/推断/streak/空隙）+ 单测全绿
+- [x] `@tickcap/tokens`：06 §3 全部令牌 + 颜色工具 + 可读性校验测试（17 个测试，含"文字在玻璃上对比度 ≥4.5"机器强制）
+- [x] `@tickcap/core`：领域规则（归属日/推断/streak/空隙）+ 34 个单测全绿（覆盖日界/跨零点/宽限/重叠等全部评审边界）
+- [ ] Tailwind 映射（随 web 应用初始化时接入 toCssVariables）
 - [ ] 今日页代码原型（时间轴 + 滴答栏，真机浏览器验收手感）
 - [ ] server 骨架：Hono + Drizzle + 迁移 + 邮箱验证码登录
 - [ ] 胶囊 CRUD + 离线队列（断网滴答不丢不重）
@@ -38,6 +39,7 @@
 - 2026-07-27 UI 四方案比选，定稿 G「果冻胶囊」（Liquid Glass × 多巴胺）
 - 2026-07-27 文档全集评审通过；修复 6 处（日界/重叠/跨零点/streak 宽限/注销/AI 解耦），详见 [评审记录](docs/10-评审记录.md)
 - 2026-07-27 骨架搭建；约定 AGENTS.md 为 AI 约束、WORK.md 为进度快照
+- 2026-07-27 首推 GitHub（testerggf/TickCap）；tokens + core 落地，51 测试全绿；06 的可读性红线改由测试机器强制
 
 ## 验证指标（内测达标线，不达标改体验不加功能）
 
