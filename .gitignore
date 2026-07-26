@@ -18,3 +18,4 @@ coverage/
 *.log
 apps/web/e2e/*.png
 next-env.d.ts
+*.tsbuildinfo
