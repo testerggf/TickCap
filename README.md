@@ -30,11 +30,12 @@
 | [08-AI复盘技术设计](docs/08-AI复盘技术设计.md) | 数据打包与隐私过滤、Prompt 三层架构、模型路由与成本、生成流水线、质量评估 |
 | [09-埋点与数据指标](docs/09-埋点与数据指标.md) | 事件字典、指标口径（北极星计算公式）、看板设计 |
 | [10-评审记录](docs/10-评审记录.md) | 文档评审结论、已修复问题、悬置项与下次评审触发点 |
+| [11-iOS开发计划](docs/11-iOS开发计划.md) | iOS-first 可行性、技术路线、范围边界、阶段门禁与验收标准（已批准，执行中） |
 
 ## 平台策略
 
-**Web H5 优先（自适应手机）→ 微信小程序 → iOS/Android App（预留）**。业务逻辑 100% 共享（monorepo `@tickcap/core`），各端 UI 原生手感。
+**保留 Web H5 M1 → iOS-first（当前）→ 微信小程序 / Android 后续复用**。业务逻辑共享于 `@tickcap/core`，契约与令牌分别共享于 `@tickcap/api`、`@tickcap/tokens`，各端 UI 保持原生手感。
 
 ## 当前状态
 
-全套开发文档（01–10）落地并通过第一次全集评审（2026-07-27），可进入开发。下一步：git init + monorepo 骨架 + `@tickcap/tokens` + `@tickcap/core`（领域规则 + 单测）+ 今日页代码原型。
+M1 Web 本地模式已交付（核心主链路、51 个单测、24 项 E2E 断言）。[iOS-first 专项开发计划](docs/11-iOS开发计划.md) 在 `codex/ios-first` 分支执行；G0–G5-L 与 G6-P Simulator 总回归已通过，完整备份/恢复和本地提醒/action 形成个人本地闭环。iOS 18.7.1 真机 Release 已由 Personal Team 构建、签名并覆盖安装，JS 与资源内置且在 Metro 未运行时成功启动，最小 MVP 已通过用户验收，当前进入 14 天个人使用观察。账号、云同步、在线 AI、远程推送与多人 TestFlight 后移到 v1.1 评审。实时进度以 [WORK.md](WORK.md) 为准。

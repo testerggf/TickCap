@@ -70,3 +70,10 @@ export function lighten(hex: string, amount: number): string {
   const to2 = (v: number) => t(v).toString(16).padStart(2, '0')
   return `#${to2(c.r)}${to2(c.g)}${to2(c.b)}`
 }
+
+/** 将不透明颜色转为 React Native/Web 都可消费的 rgba。 */
+export function withAlpha(color: string, alpha: number): string {
+  const c = parseColor(color)
+  const bounded = Math.max(0, Math.min(1, alpha))
+  return `rgba(${Math.round(c.r)},${Math.round(c.g)},${Math.round(c.b)},${bounded})`
+}

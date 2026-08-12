@@ -11,6 +11,7 @@ import {
   computeStreak,
   inferTimes,
   logicalToday,
+  uuidV7,
   type UserTimeSettings,
 } from '@tickcap/core'
 import type { CustomTag } from './tags'
@@ -107,10 +108,12 @@ const defaultSettings = (): Settings => ({
   reminderIntervalMin: 60,
 })
 
-const uuid = () =>
-  typeof crypto !== 'undefined' && 'randomUUID' in crypto
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(36).slice(2)}`
+const uuid = () => {
+  if (typeof crypto === 'undefined' || !('getRandomValues' in crypto)) {
+    throw new Error('当前环境不支持安全随机数，无法创建记录')
+  }
+  return uuidV7(Date.now(), crypto.getRandomValues(new Uint8Array(10)))
+}
 
 export const useStore = create<State>()(
   persist(
